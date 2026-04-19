@@ -1,0 +1,43 @@
+@extends('user.layout.auth')
+
+@section('content')
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Register - {{ ucfirst('user') }}</div>
+
+                <div class="card-body">
+                    <form method="POST" action="{{ url('/user/register') }}">
+                        @csrf
+
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input class="form-control" type="text" name="name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input class="form-control" type="email" name="email" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input class="form-control" type="password" name="password" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Confirm Password</label>
+                            <input class="form-control" type="password" name="password_confirmation" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button class="btn btn-success" type="submit">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
