@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('expenditures', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('project_id')->constrained();
+            $table->string('purpose'); 
+            $table->decimal('amount', 15, 2);
+            $table->date('date_spent');
+            $table->string('receipt_image')->nullable(); 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

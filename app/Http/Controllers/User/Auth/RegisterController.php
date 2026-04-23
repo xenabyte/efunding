@@ -27,6 +27,8 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'member_type' => $request->member_type,
+            'member_id' => 'ODA-' . now()->year . '-' . str_pad(User::count() + 1, 4, '0', STR_PAD_LEFT),
         ]);
 
         Auth::guard('user')->login($user);

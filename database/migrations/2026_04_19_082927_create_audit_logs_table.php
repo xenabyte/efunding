@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('action'); // e.g., "Verified Payment", "Deleted User" [cite: 20]
             $table->json('changes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

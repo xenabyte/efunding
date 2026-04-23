@@ -1,9 +1,12 @@
 <?php
+
 namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\AuditLog; //
+use Flasher\Toastr\Prime\ToastrFactory;
 
 class LoginController extends Controller
 {
@@ -11,17 +14,33 @@ class LoginController extends Controller
         return view('admin.auth.login');
     }
 
-    public function login(Request $request) {
-        $request->validate([
+    public function login(Request $request, ToastrFactory $flasher) {
+        $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        if (Auth::guard('admin')->attempt($request->only('email','password'), $request->filled('remember'))) {
+        if (Auth::guard('admin')->attempt($credentials, $request->filled('remember'))) {
+            $admin = Auth::guard('admin')->user();
+
+            AuditLog::create([
+                'user_id' => $admin->id, //
+                'action'  => 'Admin Login', //
+                'changes' => json_encode([
+                    'ip_address' => $request->ip(),
+                    'user_agent' => $request->userAgent(),
+                    'login_at'   => now()->toDateTimeString()
+                ]) //
+            ]);
+
+            $flasher->addSuccess("Welcome back, {$admin->name}! Login successful.");
+
             return redirect()->intended(url('/admin/home'));
         }
 
-        return back()->withErrors(['email' => 'Invalid credentials.'])->withInput($request->only('email','remember'));
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->withInput($request->only('email', 'remember'));
     }
 
     public function logout(Request $request) {

@@ -10,6 +10,7 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "laravel/ui": "^4.6",
         "php-flasher/flasher-toastr-laravel": "^1.15",
         "skyhacker/laravel-multi-auth": "^3.0"
     },
